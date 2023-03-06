@@ -2,7 +2,6 @@ package tests.courier;
 
 import general_steps.CourierGeneralSteps;
 import general_steps.RegisteredCourier;
-import generators.GeneratorAccountData;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -10,7 +9,6 @@ import io.qameta.allure.Story;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import jsonobjects.AccountData;
-import jsonobjects.Courier;
 import org.hamcrest.Matcher;
 import org.junit.*;
 import requests.CourierAPI;
@@ -22,18 +20,17 @@ import static org.hamcrest.Matchers.greaterThan;
 @Feature(value = "Login courier")
 @Story(value = "Positive tests")
 public class LoginCourierPositiveTest {
-    private Courier courier;
+    private AccountData accountData;
 
     @Before
     public void setUp() {
-        courier = new RegisteredCourier().courier;
+        accountData = new RegisteredCourier().accountData;
     }
 
     @Test
     @DisplayName("Login courier with valid account data")
     @Description("Expected status code - 200")
     public void  loginCourierWithValidAccountData() {
-        AccountData accountData = GeneratorAccountData.getAccountDataFromCourier(courier);
         Response response = CourierAPI.loginCourier(accountData);
 
         String keyJson = "id";
@@ -48,6 +45,6 @@ public class LoginCourierPositiveTest {
 
     @After
     public void deleteTestData() {
-        CourierGeneralSteps.delete(courier);
+        CourierGeneralSteps.delete(accountData);
     }
 }
